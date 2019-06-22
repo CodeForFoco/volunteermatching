@@ -103,7 +103,7 @@ const endpoints = {
     title: 'Partners',
     endpoint: '/api/partners',
     text(data) {
-      return `${data.name} | ${data.opportunity_count}`;
+      return `${data.name} | ${data.opportunity_count} Opportunities`;
     },
     fields: [{
       name: 'name'

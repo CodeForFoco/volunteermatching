@@ -7,7 +7,7 @@ export default class PartnerThumb extends Component {
     const { id } = this.props;
     return (
       <div className='opp-thumb'>
-        <h4>{this.props.name} - {this.props.opportunity_count}</h4>
+        <h4>{this.props.name} | {this.props.opportunity_count} Opps</h4>
         <div className="btn-group">
           {/*<Link className="btn btn-info btn-sm" to={`/partners/view/${id}`}>View</Link>
           */}
