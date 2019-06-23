@@ -6,6 +6,7 @@ import Select from '../objects/Select/Select';
 import SelectMany from '../objects/SelectMany/SelectMany';
 import TextArea from '../objects/TextArea/TextArea';
 import ArrayCheckBox from '../objects/ArrayCheckBox/ArrayCheckBox';
+import SelectOneSearch from '../objects/SearchSelectOne/SelectOneSearch';
 
 const frequency_modifier = [
   'day',
@@ -35,7 +36,7 @@ const endpoints = {
     },
     fields: [{
       name: 'partner_name',
-      component: Select,
+      component: SelectOneSearch,
       getOptions: {
         endpoint: '/api/partners',
         property: 'name'

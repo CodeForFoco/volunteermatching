@@ -1,0 +1,21 @@
+.select-one-search-input-wrap {
+  position: relative;
+}
+
+.select-one-search-results {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 2.85rem;
+  width: 100%;
+  z-index: 10;
+  background: #f7f7f9;
+  border: solid rgb(206, 212, 218);
+}
+
+.select-one-search-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
