@@ -79,7 +79,8 @@ export default class Opportunties extends Component {
               deleteOne={() => { this.deleteOne(i) }}
             />
           );
-        }): <p className="text-danger">No Opportunities found.</p>}
+        }): 
+        <p className="text-danger">No Opportunities found.</p>}
         <Pagination
           {...this.state}
           setValue={this.setValue.bind(this)}
