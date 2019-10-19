@@ -5,13 +5,26 @@ from volunteercore.api import bp
 from volunteercore.volops.models import Partner, Opportunity
 from volunteercore.api.errors import bad_request
 from flask_whooshalchemyplus import index_one_record
-
+from whoosh import scoring
 
 # API GET endpoint returns individual opportunity from given id
 @bp.route('/api/opportunities/<int:id>', methods=['GET'])
 @login_required
 def get_opportunity_api(id):
     return jsonify(Opportunity.query.get_or_404(id).to_dict())
+
+# Returns opportunities via a weighted search.
+# Points are scored like so: tags > name > description
+# See docs for more information:
+# https://whoosh.readthedocs.io/en/latest/recipes.html#score-results-based-on-the-position-of-the-matched-term
+def get_opportunities_score(searcher, fieldname, text, matcher):
+    print(matcher.value_as("tags"))
+    print(matcher.value_as("name"))
+    print(matcher.value_as("description"))
+    tag_match_count = matcher.value_as("tags")
+    name_match_count = matcher.value_as("name")
+    description_match_count = match.value_as("description")
+    return tag_match_count * 3 + name_match_count * 2 + description_match_count
 
 # API GET endpoint returns all opportunities, paginated with given page and
 # quantity per page. Accepts search argument to filter with Whoosh search.
@@ -23,26 +36,13 @@ def get_opportunities_api():
     search = request.args.get('search')
     frequency_unit = request.args.get('frequency_unit')
     frequency_modifier = request.args.get('frequency_modifier')
-
+    
+    opportunity_weighting = scoring.FunctionWeighting(get_opportunities_score)
+    with Opportunity.query.whoosh_search(opportunity_weighting) as s:
+        print(s)
+    
     if search:
         data = Opportunity.query.whoosh_search(search, or_=True)
-        if frequency_unit and frequency_modifier:
-            data = data.filter_by(
-                frequency_unit=frequency_unit,
-                frequency_modifier=frequency_modifier)
-        elif frequency_modifier:
-            data = data.filter_by(frequency_modifier=frequency_modifier)
-        elif frequency_unit:
-            data = data.filter_by(frequency_unit=frequency_unit)
-    elif frequency_unit and frequency_modifier:
-        data = Opportunity.query.filter_by(
-            frequency_unit=frequency_unit,
-            frequency_modifier=frequency_modifier)
-    elif frequency_modifier:
-        data = Opportunity.query.filter_by(
-            frequency_modifier=frequency_modifier)
-    elif frequency_unit:
-        data = Opportunity.query.filter_by(frequency_unit=frequency_unit)
     else:
         data = Opportunity.query
     data = Opportunity.to_colletion_dict(
