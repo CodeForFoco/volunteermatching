@@ -32,6 +32,7 @@ def create_app(config_class=Config):
     from volunteercore.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
+    # Send all other requests to react
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def index(path):
