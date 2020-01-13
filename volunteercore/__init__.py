@@ -32,8 +32,9 @@ def create_app(config_class=Config):
     from volunteercore.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
-    @app.route('/')
-    def index():
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def index(path):
         return render_template('index.html')
 
     return app
