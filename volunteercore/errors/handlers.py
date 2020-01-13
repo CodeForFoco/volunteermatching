@@ -6,7 +6,6 @@ from volunteercore.api.errors import error_response as api_error_response
 
 @bp.app_errorhandler(404)
 def not_found_error(error):
-    print(error)
     return api_error_response(404)
 
 
